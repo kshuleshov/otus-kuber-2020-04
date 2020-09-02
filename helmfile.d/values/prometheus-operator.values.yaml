@@ -1,0 +1,30 @@
+alertmanager:
+  alertmanagerSpec:
+    nodeSelector: &nodeSelector
+      cloud.google.com/gke-nodepool: infra-pool
+    tolerations: &tolerations
+    - key: node-role
+      operator: Equal
+      value: infra
+      effect: NoSchedule
+grafana:
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+    - grafana.35.228.63.108.xip.io
+    path: /
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+kube-state-metrics:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
+prometheus:
+  prometheusSpec:
+    nodeSelector: *nodeSelector
+    serviceMonitorSelectorNilUsesHelmValues: false
+    tolerations: *tolerations
+prometheusOperator:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
