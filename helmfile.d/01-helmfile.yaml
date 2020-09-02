@@ -1,0 +1,74 @@
+# helmfile version v0.126.2
+
+helmDefaults:
+  createNamespace: true
+  # https://github.com/roboll/helmfile/issues/1176
+  verify: false
+  wait: true
+
+repositories:
+- name: elastic
+  url: https://helm.elastic.co
+- name: stable
+  url: https://kubernetes-charts.storage.googleapis.com
+
+releases:
+- chart: elastic/elasticsearch
+  labels:
+    group: logging
+  name: elasticsearch
+  namespace: logging
+  values:
+  - values/elasticsearch.values.yaml
+  version: 7.9.0
+
+- chart: stable/elasticsearch-exporter
+  labels:
+    group: logging
+  name: elasticsearch-exporter
+  namespace: logging
+  needs:
+  - logging/elasticsearch
+  - monitoring/prometheus-operator
+  values:
+  - values/elasticsearch-exporter.values.yaml
+  version: 3.7.0
+
+- chart: stable/fluent-bit
+  labels:
+    group: logging
+  name: fluent-bit
+  namespace: logging
+  needs:
+  - logging/elasticsearch
+  - monitoring/prometheus-operator
+  values:
+  - values/fluent-bit.values.yaml
+  version: 2.10.0
+
+- chart: elastic/kibana
+  labels:
+    group: logging
+  name: kibana
+  namespace: logging
+  needs:
+  - logging/elasticsearch
+  #- ingress-nginx/ingress-nginx
+  values:
+  - values/kibana.values.yaml
+  - values/kibana.values.yaml.gotmpl
+  version: 7.9.0
+
+- chart: stable/prometheus-operator
+  # https://github.com/roboll/helmfile/issues/1124
+  disableValidation: true
+  labels:
+    group: monitoring
+  name: prometheus-operator
+  namespace: monitoring
+  #needs:
+  #- ingress-nginx/ingress-nginx
+  values:
+  - values/prometheus-operator.values.yaml
+  - values/prometheus-operator.values.yaml.gotmpl
+  version: 9.3.1

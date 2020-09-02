@@ -1,0 +1,46 @@
+# helmfile version v0.126.2
+
+helmDefaults:
+  #args:
+  #- "-v9"
+  createNamespace: true
+  # https://github.com/roboll/helmfile/issues/1176
+  verify: false
+  wait: true
+
+repositories:
+- name: ingress-nginx
+  url: https://kubernetes.github.io/ingress-nginx
+
+releases:
+- chart: ingress-nginx/ingress-nginx
+  # https://github.com/roboll/helmfile/issues/1124
+  disableValidation: true
+  hooks:
+  - events:
+    - presync
+    command: kubectl
+    args:
+    - apply
+    - -f
+    - https://raw.githubusercontent.com/helm/charts/master/stable/prometheus-operator/crds/crd-servicemonitor.yaml
+    showlogs: true
+  - events:
+    - presync
+    command: kubectl
+    args: ["wait", "--for", "condition=established", "crd/servicemonitors.monitoring.coreos.com"]
+    showlogs: true
+  - events:
+    - postsync
+    command: sh
+    args:
+    - -c
+    - "while [ -z $(kubectl get svc ingress-nginx-controller -n ingress-nginx -o jsonpath={.status.loadBalancer.ingress[0].ip} || echo X) ]; do sleep 1; done"
+    showlogs: true
+  labels:
+    group: ingress-nginx
+  name: ingress-nginx
+  namespace: ingress-nginx
+  values:
+  - values/ingress-nginx.values.yaml
+  version: 2.12.1

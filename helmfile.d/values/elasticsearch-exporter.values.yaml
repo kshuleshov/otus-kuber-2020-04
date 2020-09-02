@@ -1,0 +1,14 @@
+es:
+  uri: http://elasticsearch-master:9200 
+
+nodeSelector:
+  cloud.google.com/gke-nodepool: infra-pool
+
+serviceMonitor:
+  enabled: true
+
+tolerations:
+- key: node-role
+  operator: Equal
+  value: infra
+  effect: NoSchedule

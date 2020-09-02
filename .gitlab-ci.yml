@@ -1,6 +1,7 @@
 
 stages:
 - build
+- gcloud
 
 .docker:
   after_script:
@@ -12,8 +13,18 @@ stages:
   services:
   - docker:19.03.11-dind
 
+.gcloud:
+  image:
+    name: kshuleshov/otus-kuber-2020-04_gcloud-helmfile
+  rules:
+  - allow_failure: true
+    when: manual
+
 build:gcloud:
   extends: .docker
+  rules:
+  - changes:
+    - gcloud/*
   script:
   - cd gcloud
   - docker build . -f Dockerfile -t $IMAGE_TAG
@@ -21,3 +32,15 @@ build:gcloud:
   stage: build
   variables:
     IMAGE_TAG: $DOCKER_REGISTRY_USER/otus-kuber-2020-04_gcloud-helmfile:latest
+
+gcloud:create-cluster:
+  extends: .gcloud
+  script:
+  - ./create-cluster.docker.sh
+  stage: gcloud
+
+gcloud:delete-cluster:
+  extends: .gcloud
+  script:
+  - ./delete-cluster.docker.sh
+  stage: gcloud
