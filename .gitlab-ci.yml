@@ -1,0 +1,23 @@
+
+stages:
+- build
+
+.docker:
+  after_script:
+  - docker logout
+  before_script:
+  - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD
+  image:
+    name: docker:19.03.11
+  services:
+  - docker:19.03.11-dind
+
+build:gcloud:
+  extends: .docker
+  script:
+  - cd gcloud
+  - docker build . -f Dockerfile -t $IMAGE_TAG
+  - docker push $IMAGE_TAG
+  stage: build
+  variables:
+    IMAGE_TAG: $DOCKER_REGISTRY_USER/otus-kuber-2020-04_gcloud-helmfile:latest
