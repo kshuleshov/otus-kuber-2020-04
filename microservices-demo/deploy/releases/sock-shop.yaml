@@ -15,7 +15,7 @@ spec:
     git: https://github.com/kshuleshov/otus-kuber-2020-04.git
     path: deploy/charts/sock-shop
     ref: master
-  values:
+  #values:
     #image:
       #repository: kshuleshov/otus-kuber-2020-04_sock-shop
       #tag: v0.0.1
