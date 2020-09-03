@@ -1,0 +1,26 @@
+chartsSyncInterval: 1m
+
+configureRepositories:
+  enable: true
+  repositories:
+  - name: stable
+    url: https://kubernetes-charts.storage.googleapis.com
+
+git:
+  pollInterval: 1m
+  ssh:
+    secretName: flux-git-deploy
+
+helm:
+  versions: v3
+
+logReleaseDiffs: true
+
+nodeSelector:
+  cloud.google.com/gke-nodepool: infra-pool
+
+tolerations:
+- key: node-role
+  operator: Equal
+  value: infra
+  effect: NoSchedule

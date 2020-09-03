@@ -1,0 +1,26 @@
+git:
+  branch: master
+  ciSkip: true
+  path: microservices-demo/deploy
+  pollInterval: 1m
+  readonly: true # false
+  url: https://github.com/kshuleshov/otus-kuber-2020-04.git
+
+memcached:
+  nodeSelector: &nodeSelector
+    cloud.google.com/gke-nodepool: infra-pool
+  tolerations: &tolerations
+  - key: node-role
+    operator: Equal
+    value: infra
+    effect: NoSchedule
+
+nodeSelector: *nodeSelector
+
+registry:
+  automationInterval: 1m
+
+sync:
+  state: secret # git
+
+tolerations: *tolerations
