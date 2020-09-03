@@ -1,3 +1,24 @@
+extraContainers:
+- name: kibana-import
+  image: "docker.elastic.co/kibana/kibana:7.9.0"
+  imagePullPolicy: "IfNotPresent"
+  volumeMounts:
+  - name: kibanaconfig
+    mountPath: /usr/share/kibana/config/kibana.import.ndjson
+    subPath: kibana.import.ndjson
+  command:
+  - sh
+  - -cx
+  - |
+    #!/usr/bin/env bash -e
+    set -- -XPOST -s --fail -L -H "kbn-xsrf: true" --form file=@/usr/share/kibana/config/kibana.import.ndjson
+    STATUS="999"
+    while [[ "${STATUS}" -ne 200 ]]; do
+      sleep 30
+      STATUS=$(curl --output /dev/stderr --write-out "%{http_code}" "$@" "http://localhost:5601/api/saved_objects/_import?overwrite=true")
+    done
+    sleep 3600
+
 ingress:
   enabled: true
   annotations:
@@ -5,13 +26,16 @@ ingress:
   path: /
   hosts:
   - kibana.35.228.63.108.xip.io
+
 nodeSelector:
   cloud.google.com/gke-nodepool: infra-pool
+
 resources:
   limits:
     cpu: "500m"
   requests:
     cpu: "500m"
+
 tolerations:
 - key: node-role
   operator: Equal
