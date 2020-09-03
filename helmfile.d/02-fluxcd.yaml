@@ -1,0 +1,48 @@
+# helmfile version v0.126.2
+
+helmDefaults:
+  createNamespace: true
+  # https://github.com/roboll/helmfile/issues/1176
+  verify: false
+  wait: true
+
+repositories:
+- name: fluxcd
+  url: https://charts.fluxcd.io
+
+releases:
+- chart: fluxcd/flux
+  labels:
+    group: flux
+  name: flux
+  namespace: flux
+  values:
+  - values/flux.values.yaml
+  version: 1.5.0
+
+- chart: fluxcd/helm-operator
+  # https://github.com/roboll/helmfile/issues/1124
+  disableValidation: true
+  hooks:
+  - events:
+    - presync
+    command: kubectl
+    args:
+    - apply
+    - -f
+    - https://raw.githubusercontent.com/fluxcd/helm-operator/master/deploy/crds.yaml
+    showlogs: true
+  - events:
+    - presync
+    command: kubectl
+    args: ["wait", "--for", "condition=established", "crd/helmreleases.helm.fluxcd.io"]
+    showlogs: true
+  labels:
+    group: flux
+  name: helm-operator
+  namespace: flux
+  needs:
+  - flux/flux
+  values:
+  - values/helm-operator.values.yaml
+  version: 1.2.0
