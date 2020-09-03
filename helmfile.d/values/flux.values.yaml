@@ -1,3 +1,6 @@
+dashboards:
+  enabled: true
+
 git:
   branch: master
   ciSkip: true
@@ -16,6 +19,13 @@ memcached:
     effect: NoSchedule
 
 nodeSelector: *nodeSelector
+
+prometheus:
+  enabled: true
+  serviceMonitor:
+    create: true
+    interval: 30s
+    scrapeTimeout: 30s
 
 registry:
   automationInterval: 1m

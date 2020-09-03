@@ -6,6 +6,9 @@ configureRepositories:
   - name: stable
     url: https://kubernetes-charts.storage.googleapis.com
 
+dashboards:
+  enabled: true
+
 git:
   pollInterval: 1m
   ssh:
@@ -15,6 +18,13 @@ helm:
   versions: v3
 
 logReleaseDiffs: true
+
+prometheus:
+  enabled: true
+  serviceMonitor:
+    create: true
+    interval: 30s
+    scrapeTimeout: 30s
 
 nodeSelector:
   cloud.google.com/gke-nodepool: infra-pool
