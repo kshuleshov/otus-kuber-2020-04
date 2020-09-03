@@ -1,0 +1,21 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: sock-shop
+  namespace: sock-shop
+  annotations:
+    fluxcd.io/ignore: "false"
+    fluxcd.io/automated: "true"
+    flux.weave.works/tag.chart-image: semver:~v0.0
+spec:
+  releaseName: sock-shop
+  helmVersion: v3
+  chart:
+    git: https://github.com/kshuleshov/otus-kuber-2020-04.git
+    path: deploy/charts/sock-shop
+    ref: master
+  values:
+    #image:
+      #repository: kshuleshov/otus-kuber-2020-04_sock-shop
+      #tag: v0.0.1
