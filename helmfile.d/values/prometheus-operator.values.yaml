@@ -7,6 +7,7 @@ alertmanager:
       operator: Equal
       value: infra
       effect: NoSchedule
+
 grafana:
   ingress:
     enabled: true
@@ -16,15 +17,21 @@ grafana:
     - grafana.35.228.63.108.xip.io
     path: /
   nodeSelector: *nodeSelector
+  sidecar:
+    dashboards:
+      searchNamespace: ALL
   tolerations: *tolerations
+
 kube-state-metrics:
   nodeSelector: *nodeSelector
   tolerations: *tolerations
+
 prometheus:
   prometheusSpec:
     nodeSelector: *nodeSelector
     serviceMonitorSelectorNilUsesHelmValues: false
     tolerations: *tolerations
+
 prometheusOperator:
   nodeSelector: *nodeSelector
   tolerations: *tolerations

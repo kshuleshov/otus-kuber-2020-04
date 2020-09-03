@@ -46,6 +46,14 @@ releases:
   - values/fluent-bit.values.yaml
   version: 2.10.0
 
+- chart: charts/grafana-dashboards
+  labels:
+    group: monitoring
+  name: grafana-dashboards
+  namespace: monitoring
+  needs:
+  - monitoring/prometheus-operator
+
 - chart: elastic/kibana
   labels:
     group: logging
