@@ -8,11 +8,6 @@ export GKE_ZONE=${GKE_ZONE:=europe-north1-a}
 gcloud version
 
 # Google Cloud service accounts
-if [ -n "$GCP_SERVICE_KEY" ]
-then
-  GCP_SERVICE_KEY_FILE=gcloud-service-key.json
-  echo $GCP_SERVICE_KEY > ${GCP_SERVICE_KEY_FILE} 
-fi
 gcloud auth activate-service-account --key-file ${GCP_SERVICE_KEY_FILE}
 
 gcloud beta container --project "$GCP_PROJECT" clusters list
