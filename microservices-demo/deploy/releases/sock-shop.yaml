@@ -13,7 +13,7 @@ spec:
   helmVersion: v3
   chart:
     git: https://github.com/kshuleshov/otus-kuber-2020-04.git
-    path: deploy/charts/sock-shop
+    path: microservices-demo/deploy/charts/sock-shop
     ref: master
   #values:
     #image:
