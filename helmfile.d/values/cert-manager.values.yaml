@@ -1,0 +1,22 @@
+cainjector:
+  nodeSelector: &nodeSelector
+    cloud.google.com/gke-nodepool: infra-pool
+
+  tolerations: &tolerations
+  - key: node-role
+    operator: Equal
+    value: infra
+    effect: NoSchedule
+
+nodeSelector: *nodeSelector
+
+prometheus:
+  enabled: true
+  servicemonitor:
+    enabled: true
+
+tolerations: *tolerations
+
+webhook:
+  nodeSelector: *nodeSelector
+  tolerations: *tolerations
