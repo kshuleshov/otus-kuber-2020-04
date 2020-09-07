@@ -32,13 +32,6 @@ releases:
     command: kubectl
     args: ["wait", "--for", "condition=established", "crd/servicemonitors.monitoring.coreos.com"]
     showlogs: true
-  - events:
-    - postsync
-    command: sh
-    args:
-    - -c
-    - "while [ -z $(kubectl get svc ingress-nginx-controller -n ingress-nginx -o jsonpath={.status.loadBalancer.ingress[0].ip} || echo X) ]; do sleep 1; done"
-    showlogs: true
   labels:
     group: ingress-nginx
   name: ingress-nginx
