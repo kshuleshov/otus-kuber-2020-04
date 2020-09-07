@@ -1,11 +1,3 @@
-ingress:
-  hosts:
-  - kibana.{{ exec "kubectl" (list "get" "svc" "ingress-nginx-controller" "-n" "ingress-nginx" "-o" "jsonpath={.status.loadBalancer.ingress[0].ip}" ) }}.xip.io
-  tls:
-  - hosts:
-    - kibana.{{ exec "kubectl" (list "get" "svc" "ingress-nginx-controller" "-n" "ingress-nginx" "-o" "jsonpath={.status.loadBalancer.ingress[0].ip}" ) }}.xip.io
-    secretName: kibana-tls
-
 kibanaConfig:
   kibana.import.ndjson: |
     {{- readFile "files/kibana.import.ndjson" | nindent 4 }}

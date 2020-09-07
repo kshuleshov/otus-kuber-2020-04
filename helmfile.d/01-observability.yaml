@@ -78,5 +78,5 @@ releases:
   #- ingress-nginx/ingress-nginx
   values:
   - values/prometheus-operator.values.yaml
-  - values/prometheus-operator.values.yaml.gotmpl
+  #- values/prometheus-operator.values.yaml.gotmpl
   version: 9.3.1

@@ -20,18 +20,31 @@ stages:
   - allow_failure: true
     when: manual
 
-build:gcloud:
+.build:docker:
   extends: .docker
   rules:
   - changes:
-    - gcloud/*
+    - $SRC_PATH/*
   script:
-  - cd gcloud
+  - cd $SRC_PATH
   - docker build . -f Dockerfile -t $IMAGE_TAG
   - docker push $IMAGE_TAG
   stage: build
   variables:
+    IMAGE_TAG: IMAGE_TAG
+    SRC_PATH: SRC_PATH
+
+build:manager:
+  extends: .build:docker
+  variables:
+    IMAGE_TAG: $DOCKER_REGISTRY_USER/otus-kuber-2020-04_ingress-host-manager:latest
+    SRC_PATH: gopath/src/ingress-host-manager
+
+build:gcloud:
+  extends: .build:docker
+  variables:
     IMAGE_TAG: $DOCKER_REGISTRY_USER/otus-kuber-2020-04_gcloud-helmfile:latest
+    SRC_PATH: gcloud
 
 gcloud:create-cluster:
   extends: .gcloud

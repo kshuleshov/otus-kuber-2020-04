@@ -15,7 +15,19 @@ spec:
     git: https://github.com/kshuleshov/otus-kuber-2020-04.git
     path: microservices-demo/deploy/charts/sock-shop
     ref: master
-  #values:
+  values:
     #image:
       #repository: kshuleshov/otus-kuber-2020-04_sock-shop
       #tag: v0.0.1
+    ingress:
+      annotations:
+        certmanager.k8s.io/acme-challenge-type: http01
+        #certmanager.k8s.io/cluster-issuer: letsencrypt-production
+        certmanager.k8s.io/cluster-issuer: letsencrypt-staging
+        kubernetes.io/ingress.class: nginx
+      hosts:
+      - sock-shop.0.0.0.0.xip.io
+      tls:
+      - hosts:
+        - sock-shop.0.0.0.0.xip.io
+        secretName: sock-shop-tls

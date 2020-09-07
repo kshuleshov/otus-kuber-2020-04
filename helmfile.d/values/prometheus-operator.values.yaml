@@ -17,8 +17,12 @@ grafana:
       certmanager.k8s.io/cluster-issuer: letsencrypt-staging
       kubernetes.io/ingress.class: nginx
     hosts:
-    - grafana.35.228.63.108.xip.io
+    - grafana.0.0.0.0.xip.io
     path: /
+    tls:
+    - hosts:
+      - grafana.0.0.0.0.xip.io
+      secretName: grafana-tls
   nodeSelector: *nodeSelector
   sidecar:
     dashboards:

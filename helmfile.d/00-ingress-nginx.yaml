@@ -82,3 +82,15 @@ releases:
   namespace: cert-manager
   needs:
   - cert-manager/cert-manager
+
+- chart: charts/ingress-host-manager
+  # https://github.com/roboll/helmfile/issues/1124
+  disableValidation: true
+  labels:
+    group: ingress-nginx
+  name: ingress-host-manager
+  namespace: ingress-host-manager
+  needs:
+  - ingress-nginx/ingress-nginx
+  values:
+  - values/ingress-host-manager.values.yaml

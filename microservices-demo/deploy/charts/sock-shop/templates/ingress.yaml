@@ -1,14 +1,27 @@
+{{- if .Values.ingress.enabled -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: socks-ingress
+{{- with .Values.ingress.annotations }}
   annotations:
-    kubernetes.io/ingress.class: nginx
+{{ toYaml . | indent 4 }}
+{{- end }}
 spec:
+{{- if .Values.ingress.tls }}
+  tls:
+{{ toYaml .Values.ingress.tls | indent 4 }}
+{{- end }}
   rules:
-  - http:
-      paths:
-      - path: /
-        backend:
-          serviceName: front-end
-          servicePort: 80
+  {{- range .Values.ingress.hosts }}
+    - http:
+        paths:
+          - path: /
+            backend:
+              serviceName: front-end
+              servicePort: 80
+  {{- with . }}
+      host: {{ . }}
+  {{- end }}
+  {{- end }}
+{{- end }}
