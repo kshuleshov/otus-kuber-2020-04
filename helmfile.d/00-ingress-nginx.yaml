@@ -11,6 +11,8 @@ helmDefaults:
 repositories:
 - name: ingress-nginx
   url: https://kubernetes.github.io/ingress-nginx
+- name: jetstack
+  url: https://charts.jetstack.io
 
 releases:
 - chart: ingress-nginx/ingress-nginx
@@ -44,3 +46,39 @@ releases:
   values:
   - values/ingress-nginx.values.yaml
   version: 2.12.1
+
+- chart: jetstack/cert-manager
+  # https://github.com/roboll/helmfile/issues/1124
+  disableValidation: true
+  hooks:
+  - events:
+    - presync
+    command: kubectl
+    args:
+    - apply
+    - -f
+    #- https://github.com/jetstack/cert-manager/releases/download/v1.0.0/cert-manager.crds.yaml
+    - https://github.com/jetstack/cert-manager/releases/download/v1.0.0/cert-manager-legacy.crds.yaml
+    showlogs: true
+  - events:
+    - presync
+    command: kubectl
+    args: ["wait", "--for", "condition=established", "crd/clusterissuers.cert-manager.io"]
+    showlogs: true
+  labels:
+    group: ingress-nginx
+  name: cert-manager
+  namespace: cert-manager
+  values:
+  - values/cert-manager.values.yaml
+  version: 1.0.0
+
+- chart: charts/cert-manager-resources
+  # https://github.com/roboll/helmfile/issues/1124
+  disableValidation: true
+  labels:
+    group: ingress-nginx
+  name: cert-manager-resources
+  namespace: cert-manager
+  needs:
+  - cert-manager/cert-manager
