@@ -73,3 +73,15 @@ gcloud:delete-cluster:
   script:
   - ./delete-cluster.docker.sh
   stage: gcloud
+
+pages:
+  artifacts:
+    paths:
+    - public
+  image:
+    name: alpine
+  stage: build # deploy
+  script:
+  - echo "Deploy public to pages"
+  #only:
+  #- master
