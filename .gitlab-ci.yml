@@ -48,6 +48,8 @@ build:gcloud:
 
 gcloud:create-cluster:
   artifacts:
+    paths:
+    - public
     reports:
       dotenv: deploy.env
   environment:
