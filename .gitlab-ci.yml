@@ -27,7 +27,8 @@ stages:
     - $SRC_PATH/*
   script:
   - cd $SRC_PATH
-  - docker build . -f Dockerfile -t $IMAGE_TAG
+  - docker pull $IMAGE_TAG || true
+  - docker build --cache-from $IMAGE_TAG --tag $IMAGE_TAG .
   - docker push $IMAGE_TAG
   stage: build
   variables:
@@ -59,7 +60,9 @@ gcloud:create-cluster:
   extends: .gcloud
   script:
   - ./create-cluster.docker.sh
-  - echo "DYNAMIC_ENVIRONMENT_IP=$(./get-ingress-ip.sh)" >> deploy.env
+  - DYNAMIC_ENVIRONMENT_IP=$(./get-ingress-ip.sh)
+  - sed -e "s/0.0.0.0/$DYNAMIC_ENVIRONMENT_IP/" -i public/index.html
+  - echo "DYNAMIC_ENVIRONMENT_IP=$DYNAMIC_ENVIRONMENT_IP" >> deploy.env
   stage: gcloud
 
 gcloud:delete-cluster:
