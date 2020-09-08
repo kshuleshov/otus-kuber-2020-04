@@ -1,7 +1,8 @@
 
 stages:
 - build
-- gcloud
+- deploy
+- report
 
 .docker:
   after_script:
@@ -50,7 +51,7 @@ build:gcloud:
 gcloud:create-cluster:
   artifacts:
     paths:
-    - public
+    - deploy.env
     reports:
       dotenv: deploy.env
   environment:
@@ -61,9 +62,8 @@ gcloud:create-cluster:
   script:
   - ./create-cluster.docker.sh
   - DYNAMIC_ENVIRONMENT_IP=$(./get-ingress-ip.sh)
-  - sed -e "s/0.0.0.0/$DYNAMIC_ENVIRONMENT_IP/" -i public/index.html
   - echo "DYNAMIC_ENVIRONMENT_IP=$DYNAMIC_ENVIRONMENT_IP" >> deploy.env
-  stage: gcloud
+  stage: deploy
 
 gcloud:delete-cluster:
   environment:
@@ -72,7 +72,7 @@ gcloud:delete-cluster:
   extends: .gcloud
   script:
   - ./delete-cluster.docker.sh
-  stage: gcloud
+  stage: deploy
 
 pages:
   artifacts:
@@ -80,8 +80,10 @@ pages:
     - public
   image:
     name: alpine
-  stage: build # deploy
+  needs:
+  - job: gcloud:create-cluster
+    artifacts: true
   script:
-  - echo "Deploy public to pages"
-  #only:
-  #- master
+  - source deploy.env
+  - sed -e "s/0.0.0.0/$DYNAMIC_ENVIRONMENT_IP/" -i public/index.html
+  stage: report
