@@ -47,12 +47,23 @@ build:gcloud:
     SRC_PATH: gcloud
 
 gcloud:create-cluster:
+  artifacts:
+    reports:
+      dotenv: deploy.env
+  environment:
+    name: gcloud
+    on_stop: gcloud:delete-cluster
+    url: https://sock-shop.$DYNAMIC_ENVIRONMENT_IP.xip.io
   extends: .gcloud
   script:
   - ./create-cluster.docker.sh
+  - echo "DYNAMIC_ENVIRONMENT_IP=$(./get-ingress-ip.sh)" >> deploy.env
   stage: gcloud
 
 gcloud:delete-cluster:
+  environment:
+    action: stop
+    name: gcloud
   extends: .gcloud
   script:
   - ./delete-cluster.docker.sh
