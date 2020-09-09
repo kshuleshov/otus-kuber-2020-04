@@ -9,14 +9,18 @@ Task: Minimum viable product of the infrastructure platform for the demo applica
 
 | Directory | Description |
 | --------- | ----------- |
+| doc | Documentation |
 | gcloud | GCP tool image sources |
 | gopath/src/ingress-host-manager | Ingress host manager sources |
 | helmfile.d | Resources for bootstrapping the infrastructure platform |
 | microservices-demo/deploy | Demo application |
+| public | Pages content |
 
 ## External resources
 
 [GitLab CI/CD project](https://gitlab.com/kshuleshov/otus-kuber-2020-04)
+
+[GitLab Pages with live environment](https://kshuleshov.gitlab.io/otus-kuber-2020-04/)
 
 ## Components
 ### Kubernetes
@@ -33,50 +37,19 @@ Prometheus, Grafana, AlertManager
 
 #### Alerts
 
-https://alertmanager.0.0.0.0.xip.io/
+[List of alerts](doc/alerts.md).
 
 #### Dashboards
 
-https://grafana.0.0.0.0.xip.io/
-
-| Dashboard | Description |
-| --------- | --- |
-| Elasticsearch | Elasticsearch detailed dashboard |
-| etcd | |
-| Flux Dashboard | |
-| Helm Operator Dashboard | |
-| Kubernetes / API server | kubernetes-mixin |
-| Kubernetes / Compute Resources / Cluster | kubernetes-mixin |
-| Kubernetes / Compute Resources / Namespace (Pods) | kubernetes-mixin |
-| Kubernetes / Compute Resources / Namespace (Workloads) | kubernetes-mixin |
-| Kubernetes / Compute Resources / Node (Pods) | kubernetes-mixin |
-| Kubernetes / Compute Resources / Pod | kubernetes-mixin |
-| Kubernetes / Compute Resources / Workload | kubernetes-mixin |
-| Kubernetes / Controller Manager | kubernetes-mixin |
-| Kubernetes / Kubelet | kubernetes-mixin |
-| Kubernetes / Networking / Cluster | kubernetes-mixin |
-| Kubernetes / Networking / Namespace (Pods) | kubernetes-mixin |
-| Kubernetes / Networking / Namespace (Workload) | kubernetes-mixin |
-| Kubernetes / Networking / | Pod kubernetes-mixin |
-| Kubernetes / Networking / Workload | kubernetes-mixin |
-| Kubernetes / Persistent Volumes | kubernetes-mixin |
-| Kubernetes / Proxy | kubernetes-mixin |
-| Kubernetes / Scheduler | kubernetes-mixin |
-| Kubernetes / StatefulSets | kubernetes-mixin |
-| Nodes | |
-| Prometheus Overview | |
-| USE Method / Cluster | |
-| USE Method / Node | |
+[List of available dashboards](doc/dashboards.md).
 
 ### Centralized logging
 
 Elasticsearch, Fluent-bit, Kibana
 
-https://kibana.0.0.0.0.xip.io/
-
 ### CI/CD Pipeline
 
-[GitLab](https://gitlab.com/kshuleshov/otus-kuber-2020-04)
+[GitLab Pipelines](https://gitlab.com/kshuleshov/otus-kuber-2020-04/-/pipelines)
 
 Flux, Helm Operator
 
@@ -84,4 +57,11 @@ Flux, Helm Operator
 
 [Sock Shop by Weaveworks](https://microservices-demo.github.io/)
 
-https://sock-shop.0.0.0.0.xip.io/
+Go to [GitLab](https://gitlab.com/kshuleshov/otus-kuber-2020-04) »
+Operations »
+Environments »
+gcloud »
+![Open live environment](doc/gitlab-external-link.png)
+
+If there is no active environment, the cluster is currently stopped.
+

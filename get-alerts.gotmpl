@@ -1,0 +1,12 @@
+| Group | Name | Message | Severity |
+| ----- | ---- | ------- | -------- |
+{{- range .items }}
+{{- range .spec.groups }}
+{{- $group := .name }}
+{{- range .rules }}
+{{- if .alert }}
+| {{ $group }} | {{ .alert }} | {{ with .annotations.message }}{{ . }}{{ end }} | {{ with .labels.severity }}{{ . }}{{ end }} |
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
