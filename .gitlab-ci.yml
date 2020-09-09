@@ -59,9 +59,6 @@ gcloud:create-cluster:
     on_stop: gcloud:delete-cluster
     url: https://sock-shop.$DYNAMIC_ENVIRONMENT_IP.xip.io
   extends: .gcloud
-  needs:
-  - build:gcloud
-  - build:manager
   script:
   - ./create-cluster.docker.sh
   - DYNAMIC_ENVIRONMENT_IP=$(./get-ingress-ip.sh)
@@ -73,8 +70,6 @@ gcloud:delete-cluster:
     action: stop
     name: gcloud
   extends: .gcloud
-  needs:
-  - build:gcloud
   script:
   - ./delete-cluster.docker.sh
   stage: deploy
