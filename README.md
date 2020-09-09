@@ -70,15 +70,35 @@ through the [Import object API](https://www.elastic.co/guide/en/kibana/current/s
 
 ### CI/CD Pipeline
 
-[GitLab Pipelines](https://gitlab.com/kshuleshov/otus-kuber-2020-04/-/pipelines)
+The project uses [pipeline](./.gitlab-ci.yml) in the [auxiliary](https://about.gitlab.com/solutions/github/)
+[GitLab Project](https://gitlab.com/kshuleshov/otus-kuber-2020-04/-/pipelines):
 
-Flux, Helm Operator
+![GitLab Pipeline](./doc/gitlab-pipeline.png)
+
+| Stage | Job | Manual | Description |
+| ----- | --- | ------ | ----------- |
+| Build | `build:gcloud` | | Build Docker image with `gcloud` and `helmfile` |
+| Build | `build:manager` | | Build Docker image with [Ingress Host Manager](./gopath/src/ingress-host-manager) |
+| Deploy | `gcloud:create-cluster` | :heavy_check_mark: | Create/update GKE cluster and infrastructure components |
+| Deploy | `gcloud:delete-cluster` | :heavy_check_mark: | Delete GKE cluster |
+| Report | `pages` | | Publish the [GitLab Page](https://kshuleshov.gitlab.io/otus-kuber-2020-04/) with the cluster endpoints |
+
+[Flux](https://github.com/fluxcd/flux) combined with [Helm Operator](https://docs.fluxcd.io/projects/helm-operator/en/latest/) automate the deployment of user applications in a GitOps manner.
+
+![GitOps](./doc/fluxcd-helm-operator-diagram.png)
 
 ### Demo application
 
-[Sock Shop by Weaveworks](https://microservices-demo.github.io/)
+The project uses the [Sock Shop by Weaveworks](https://microservices-demo.github.io/) as a demo user application.
 
-Go to [GitLab](https://gitlab.com/kshuleshov/otus-kuber-2020-04) »
+Building the Docker images is moved _out of scope_ of the project, the original images are used.
+
+The [microservices-demo/deploy](./microservices-demo/deploy) folder contains
+the [customized Helm chart](./microservices-demo/deploy/charts) for the application
+and the [corresponding Helm Release](./microservices-demo/deploy/releases) resource.
+
+To view the application start page open the Sock Shop link on the [GitLab Pages](https://kshuleshov.gitlab.io/otus-kuber-2020-04/)
+or go to [GitLab](https://gitlab.com/kshuleshov/otus-kuber-2020-04) »
 Operations »
 Environments »
 gcloud »
