@@ -83,7 +83,7 @@ The project uses [pipeline](./.gitlab-ci.yml) in the [auxiliary](https://about.g
 | Deploy | `gcloud:delete-cluster` | :heavy_check_mark: | Delete GKE cluster |
 | Report | `pages` | | Publish the [GitLab Page](https://kshuleshov.gitlab.io/otus-kuber-2020-04/) with the cluster endpoints |
 
-[Flux](https://github.com/fluxcd/flux) combined with [Helm Operator](https://docs.fluxcd.io/projects/helm-operator/en/latest/) automate the deployment of user applications in a GitOps manner.
+The [Flux](https://github.com/fluxcd/flux) combined with the [Helm Operator](https://docs.fluxcd.io/projects/helm-operator/en/latest/) automate the deployment of user applications in a GitOps manner.
 
 ![GitOps](./doc/fluxcd-helm-operator-diagram.png)
 
@@ -93,9 +93,9 @@ The project uses the [Sock Shop by Weaveworks](https://microservices-demo.github
 
 Building the Docker images is moved _out of scope_ of the project, the original images are used.
 
-The [microservices-demo/deploy](./microservices-demo/deploy) folder contains
-the [customized Helm chart](./microservices-demo/deploy/charts) for the application
-and the [corresponding Helm Release](./microservices-demo/deploy/releases) resource.
+The `microservices-demo/deploy` folder contains
+the [customized Helm chart](./microservices-demo/deploy/charts/sock-shop) for the application
+and the [corresponding Helm Release](./microservices-demo/deploy/releases/sock-shop.yaml) resource.
 
 To view the application start page open the Sock Shop link on the [GitLab Pages](https://kshuleshov.gitlab.io/otus-kuber-2020-04/)
 or go to [GitLab](https://gitlab.com/kshuleshov/otus-kuber-2020-04) »
