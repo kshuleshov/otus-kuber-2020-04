@@ -74,7 +74,7 @@ gcloud:delete-cluster:
   - ./delete-cluster.docker.sh
   stage: deploy
 
-pages:deploy:
+pages:
   artifacts:
     paths:
     - public
