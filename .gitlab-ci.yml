@@ -1,6 +1,7 @@
 
 stages:
 - build
+- test
 - deploy
 - report
 
@@ -47,6 +48,17 @@ build:gcloud:
   variables:
     IMAGE_TAG: $DOCKER_REGISTRY_USER/otus-kuber-2020-04_gcloud-helmfile:latest
     SRC_PATH: gcloud
+
+test:manager:
+  image:
+    name: golang:1.14
+  rules:
+  - changes:
+    - gopath/src/ingress-host-manager/*
+  script:
+  - cd gopath/src/ingress-host-manager
+  - make envtest SHELL=/bin/bash
+  stage: test
 
 gcloud:create-cluster:
   artifacts:

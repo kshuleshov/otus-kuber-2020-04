@@ -77,10 +77,11 @@ The project uses [pipeline](./.gitlab-ci.yml) in the [auxiliary](https://about.g
 
 | Stage | Job | Manual | Description |
 | ----- | --- | ------ | ----------- |
-| Build | `build:gcloud` | | Build Docker image with `gcloud` and `helmfile` |
-| Build | `build:manager` | | Build Docker image with [Ingress Host Manager](./gopath/src/ingress-host-manager) |
-| Deploy | `gcloud:create-cluster` | :heavy_check_mark: | Create/update GKE cluster and infrastructure components |
-| Deploy | `gcloud:delete-cluster` | :heavy_check_mark: | Delete GKE cluster |
+| Build | `build:gcloud` | | Build Docker image with the `gcloud`, `helm` and `helmfile` tools |
+| Build | `build:manager` | | Build Docker image with the [Ingress Host Manager](./gopath/src/ingress-host-manager) |
+| Test | `test:manager` | | Test the [Ingress Host Manager](./gopath/src/ingress-host-manager) using the [envtest framework](https://book.kubebuilder.io/cronjob-tutorial/writing-tests.html) |
+| Deploy | `gcloud:create-cluster` | :heavy_check_mark: | Create/update the GKE cluster and infrastructure components |
+| Deploy | `gcloud:delete-cluster` | :heavy_check_mark: | Delete the GKE cluster |
 | Report | `pages` | | Publish the [GitLab Page](https://kshuleshov.gitlab.io/otus-kuber-2020-04/) with the cluster endpoints |
 
 The [Flux](https://github.com/fluxcd/flux) combined with the [Helm Operator](https://docs.fluxcd.io/projects/helm-operator/en/latest/) automate the deployment of user applications in a GitOps manner.
