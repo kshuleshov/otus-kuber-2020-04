@@ -1,0 +1,17 @@
+loki:
+  nodeSelector: &nodeSelector
+    cloud.google.com/gke-nodepool: infra-pool
+  persistence:
+    enabled: true
+  serviceMonitor:
+    enabled: true
+  tolerations: &tolerations
+  - key: node-role
+    operator: Equal
+    value: infra
+    effect: NoSchedule
+
+promtail:
+  serviceMonitor:
+    enabled: true
+  tolerations: *tolerations

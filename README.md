@@ -27,7 +27,7 @@ Task: Minimum viable product of the infrastructure platform for the demo applica
 
 The project creates the managed Kubernetes cluster in the [Google Cloud Platform/Kubernetes Engine](https://console.cloud.google.com/kubernetes).
 
-The Kubernetes version is `1.15.12-gke.2`.
+Kubernetes version is `1.15.12-gke.2`.
 The cluster has the following layout:
 
 | Node pool | Machine type | Size | Targets |
@@ -56,6 +56,8 @@ Endpoint certificates are self signed unless the cluster is created from `master
 The [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator)
 provides Kubernetes native deployment and management of Prometheus and related monitoring components (Alert Manager, Grafana).
 
+[Grafana Loki](https://grafana.com/oss/loki/) aggregates logs and allows to visualize them in the Grafana.
+
 #### Alerts
 
 The [list of alerts](doc/alerts.md).
@@ -73,7 +75,7 @@ The [Elasticsearch Exporter](https://github.com/justwatchcom/elasticsearch_expor
 exports the various metrics about Elasticsearch to Prometheus.
 
 The [index patterns](./helmfile.d/values/files/kibana.import.ndjson)
-are created in the Kibana on startup by means of an [extra container](./helmfile.d/values/kibana.values.yaml)
+are created in Kibana on startup by means of an [extra container](./helmfile.d/values/kibana.values.yaml)
 through the [Import object API](https://www.elastic.co/guide/en/kibana/current/saved-objects-api-import.html).
 
 ### CI/CD Pipeline
@@ -92,7 +94,7 @@ The project uses [pipeline](./.gitlab-ci.yml) in the [auxiliary](https://about.g
 | Deploy | `gcloud:delete-cluster` | :heavy_check_mark: | Delete the GKE cluster |
 | Report | `pages` | | Publish the [GitLab Page](https://kshuleshov.gitlab.io/otus-kuber-2020-04/) with the cluster endpoints |
 
-The [Flux](https://github.com/fluxcd/flux) combined with the [Helm Operator](https://docs.fluxcd.io/projects/helm-operator/en/latest/) automate the deployment of user applications in a GitOps manner.
+[Flux](https://github.com/fluxcd/flux) combined with the [Helm Operator](https://docs.fluxcd.io/projects/helm-operator/en/latest/) automate the deployment of user applications in a GitOps manner.
 
 ![GitOps](./doc/fluxcd-helm-operator-diagram.png)
 
