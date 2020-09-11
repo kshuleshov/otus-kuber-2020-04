@@ -11,8 +11,16 @@ gcloud version
 gcloud auth activate-service-account --key-file ${GCP_SERVICE_KEY_FILE}
 
 gcloud beta container --project "$GCP_PROJECT" clusters list
-gcloud beta container --project "$GCP_PROJECT" clusters delete "$GKE_CLUSTER" --zone "$GKE_ZONE" --quiet
+
+if (gcloud beta container --project "$GCP_PROJECT" clusters list --zone "$GKE_ZONE" | grep -q "$GKE_CLUSTER")
+then
+  gcloud beta container --project "$GCP_PROJECT" clusters delete "$GKE_CLUSTER" --zone "$GKE_ZONE" --quiet
+fi
 
 gcloud compute --project "$GCP_PROJECT" disks list --filter="name~^gke-$GKE_CLUSTER- zone~/$GKE_ZONE$ -users:*"
+
 DISKS_NOT_IN_USE=`gcloud compute --project "$GCP_PROJECT" disks list --filter="name~^gke-$GKE_CLUSTER- zone~/$GKE_ZONE$ -users:*" --format='value(name)'`
-gcloud compute --project "$GCP_PROJECT" disks delete $DISKS_NOT_IN_USE --quiet
+if [ -n "$DISKS_NOT_IN_USE"]
+then
+  gcloud compute --project "$GCP_PROJECT" disks delete $DISKS_NOT_IN_USE --quiet
+fi
