@@ -3,16 +3,16 @@ kind: ClusterIssuer
 metadata:
   labels:
     {{- include "cert-manager-resources.labels" . | nindent 4 }}
-  name: letsencrypt-staging
+  name: letsencrypt
 spec:
   acme:
     # Email address used for ACME registration
     email: kshuleshov.gcp@gmail.com
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
-      name: letsencrypt-staging
+      name: letsencrypt
     # The ACME server URL
-    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    server: {{ .Values.clusterissuer.server }}
     # Enable the HTTP-01 challenge provider
     solvers:
     - http01:

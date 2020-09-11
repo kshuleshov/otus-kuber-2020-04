@@ -72,6 +72,7 @@ gcloud:create-cluster:
     url: https://sock-shop.$DYNAMIC_ENVIRONMENT_IP.xip.io
   extends: .gcloud
   script:
+  - if [ "${CI_COMMIT_BRANCH" == "master" ]; then HF_ENVIRONMENT=production; fi
   - ./create-cluster.docker.sh
   - DYNAMIC_ENVIRONMENT_IP=$(./get-ingress-ip.sh)
   - echo "DYNAMIC_ENVIRONMENT_IP=$DYNAMIC_ENVIRONMENT_IP" >> deploy.env
