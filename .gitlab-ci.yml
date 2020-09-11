@@ -73,7 +73,7 @@ gcloud:create-cluster:
   extends: .gcloud
   script:
   - printenv
-  - if [ "$CI_COMMIT_REF_NAME" == "master" ]; then HF_ENVIRONMENT=production; fi
+  - if [ "$CI_COMMIT_REF_NAME" == "master" ]; then export HF_ENVIRONMENT=production; fi
   - ./create-cluster.docker.sh
   - DYNAMIC_ENVIRONMENT_IP=$(./get-ingress-ip.sh)
   - echo "DYNAMIC_ENVIRONMENT_IP=$DYNAMIC_ENVIRONMENT_IP" >> deploy.env
