@@ -20,12 +20,12 @@ Task: Minimum viable product of the infrastructure platform for the demo applica
 
 [GitLab CI/CD project](https://gitlab.com/kshuleshov/otus-kuber-2020-04)
 
-[GitLab Pages with live environment](https://kshuleshov.gitlab.io/otus-kuber-2020-04/)
+[GitLab Pages with the live environment](https://kshuleshov.gitlab.io/otus-kuber-2020-04/)
 
 ## Components
 ### Kubernetes
 
-The project creates managed Kubernetes cluster in the [Google Cloud Platform/Kubernetes Engine](https://console.cloud.google.com/kubernetes).
+The project creates the managed Kubernetes cluster in the [Google Cloud Platform/Kubernetes Engine](https://console.cloud.google.com/kubernetes).
 
 The Kubernetes version is `1.15.12-gke.2`.
 The cluster has the following layout:
@@ -42,6 +42,14 @@ The [Helmfile](https://github.com/roboll/helmfile) tool [installs](./2-install-i
 The [Ingress Host Manager](./gopath/src/ingress-host-manager) is a small operator,
 that composes host names of the ingress resources in the cluster
 depending on the IP address, assigned by the Ingress Controller.
+
+### Ingress
+
+The project uses the [Nginx Ingress Controller](https://github.com/kubernetes/ingress-nginx)
+and the [Cert Manager](https://github.com/jetstack/cert-manager)
+to automate the management and issuance of TLS certificates.
+
+Endpoint certificates are self signed unless the cluster is created from `master` branch.
 
 ### Monitoring
 
@@ -65,7 +73,7 @@ The [Elasticsearch Exporter](https://github.com/justwatchcom/elasticsearch_expor
 exports the various metrics about Elasticsearch to Prometheus.
 
 The [index patterns](./helmfile.d/values/files/kibana.import.ndjson)
-are created in the Kibana on startup by means of a [extra container](./helmfile.d/values/kibana.values.yaml)
+are created in the Kibana on startup by means of an [extra container](./helmfile.d/values/kibana.values.yaml)
 through the [Import object API](https://www.elastic.co/guide/en/kibana/current/saved-objects-api-import.html).
 
 ### CI/CD Pipeline

@@ -1,5 +1,13 @@
 # helmfile version v0.126.2
 
+environments:
+  default:
+    values:
+    - issuer: acme-staging-v02
+  production:
+    values:
+    - issuer: acme-v02
+
 helmDefaults:
   #args:
   #- "-v9"
@@ -75,6 +83,8 @@ releases:
   namespace: cert-manager
   needs:
   - cert-manager/cert-manager
+  values:
+  - values/cert-manager-resources.values.yaml.gotmpl
 
 - chart: charts/ingress-host-manager
   # https://github.com/roboll/helmfile/issues/1124
