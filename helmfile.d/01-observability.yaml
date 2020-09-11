@@ -13,6 +13,8 @@ helmDefaults:
 repositories:
 - name: elastic
   url: https://helm.elastic.co
+- name: loki
+  url: https://grafana.github.io/loki/charts
 - name: stable
   url: https://kubernetes-charts.storage.googleapis.com
 
@@ -70,6 +72,15 @@ releases:
   - values/kibana.values.yaml
   - values/kibana.values.yaml.gotmpl
   version: 7.9.0
+
+- chart: loki/loki-stack
+  labels:
+    group: monitoring
+  name: loki
+  namespace: monitoring
+  values:
+  - values/loki.values.yaml
+  version: 0.40.0
 
 - chart: stable/prometheus-operator
   # https://github.com/roboll/helmfile/issues/1124
