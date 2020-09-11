@@ -17,9 +17,9 @@ then
   gcloud beta container --project "$GCP_PROJECT" clusters delete "$GKE_CLUSTER" --zone "$GKE_ZONE" --quiet
 fi
 
-gcloud compute --project "$GCP_PROJECT" disks list --zones "$GKE_ZONE" --filter="name~^gke-$GKE_CLUSTER- -users:*"
+gcloud compute --project "$GCP_PROJECT" disks list --filter="name~^gke-$GKE_CLUSTER- zone:$GKE_ZONE -users:*"
 
-DISKS_NOT_IN_USE=`gcloud compute --project "$GCP_PROJECT" disks list --zones "$GKE_ZONE" --filter="name~^gke-$GKE_CLUSTER- -users:*" --format='value(name)' | tr '\n' ' '`
+DISKS_NOT_IN_USE=`gcloud compute --project "$GCP_PROJECT" disks list --filter="name~^gke-$GKE_CLUSTER- zone:$GKE_ZONE -users:*" --format='value(name)' | tr '\n' ' '`
 if [ -n "$DISKS_NOT_IN_USE" ]
 then
   gcloud compute --project "$GCP_PROJECT" disks delete $DISKS_NOT_IN_USE --zone "$GKE_ZONE" --quiet
