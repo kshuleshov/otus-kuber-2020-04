@@ -19,8 +19,8 @@ fi
 
 gcloud compute --project "$GCP_PROJECT" disks list --filter="name~^gke-$GKE_CLUSTER- zone~/$GKE_ZONE$ -users:*"
 
-DISKS_NOT_IN_USE=`gcloud compute --project "$GCP_PROJECT" disks list --filter="name~^gke-$GKE_CLUSTER- zone~/$GKE_ZONE$ -users:*" --format='value(name)'`
-if [ -n "$DISKS_NOT_IN_USE"]
+DISKS_NOT_IN_USE=`gcloud compute --project "$GCP_PROJECT" disks list --filter="name~^gke-$GKE_CLUSTER- zone~/$GKE_ZONE$ -users:*" --format='value(name)' | tr '\n' ' '`
+if [ -n "$DISKS_NOT_IN_USE" ]
 then
   gcloud compute --project "$GCP_PROJECT" disks delete $DISKS_NOT_IN_USE --quiet
 fi
