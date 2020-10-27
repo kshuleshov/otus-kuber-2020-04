@@ -7,7 +7,7 @@ GKE_ZONE=${GKE_ZONE:=europe-north1-a}
 gcloud beta container --project "$GCP_PROJECT" \
   clusters create "$GKE_CLUSTER" \
   --addons HorizontalPodAutoscaling,HttpLoadBalancing \
-  --cluster-version "1.15.12-gke.2" \
+  --cluster-version "1.15.12-gke.20" \
   --default-max-pods-per-node "110" \
   --disk-size "100" \
   --disk-type "pd-standard" \
