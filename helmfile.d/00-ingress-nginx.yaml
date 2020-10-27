@@ -3,10 +3,12 @@
 environments:
   default:
     values:
-    - issuer: acme-staging-v02
+    - issuer: acme-staging-v02.api.letsencrypt.org/directory
+    #- issuer: api.buypass.com/acme/directory
   production:
     values:
-    - issuer: acme-v02
+    - issuer: acme-v02.api.letsencrypt.org/directory
+    #- issuer: api.buypass.com/acme/directory
 
 helmDefaults:
   #args:
